@@ -1,0 +1,127 @@
+/*
+Problem: https://www.youtube.com/watch?v=CoI4S7z1E1Y
+
+Overall example
+
+[1,0,3,9,2] => [0,3,2,1,9]
+
+x   val    replaceIndex    temp      newArray
+0    1           2           3      [3,0,1,9,2] 
+1    0           0           3      [0,3,1,9,2]
+2    1           4           2      [0,3,2,9,1]
+3    9           3           3      [0,3,2,9,1]    // what if replace index is equal to current index? doesn't matter
+4    1           3           9      [0,3,2,1,9]
+
+Complexity: O(n)
+*/
+
+function mixUpArray(array){
+	for(int x = 0; x < array.length -1; x++){
+		var replaceIndex = randInLength(array.length); //generate a replacement index
+		var temp = array[replaceIndex]; //get temporary value at replace index
+		array[replaceIndex] = array[x]; //replace replace index with value from current index
+		array[x] = temp; //replace current index with temp value
+	}
+	return array;
+}
+//This is okay, but what if we cannot replace an already replaced index?
+//Note, this never explicitly replaces index 0 i.e. not guaranteed
+function mixUpArrayDoNotReplaceIndeces(array){
+	for(int x = array.length - 1; x >=0; x--){
+		var replaceIndex = randInLength(x); //generate a replacement index, use x as will not replace previous indeces, return will always be smaller than previous indeces
+		var temp = array[replaceIndex]; //get temporary value at replace index
+		array[replaceIndex] = array[x]; //replace replace index with value from current index
+		array[x] = temp; //replace current index with temp value
+	}
+	return array;
+}
+
+/*
+Cases:
+	length is 5
+	rand() = 0.388
+	expand = 10
+	0.388 * 10 = 3.88
+	floor(3.88) = 3
+	3 % 5 = 3
+
+	length is 5
+	rand() = 0.999
+	expand = 10
+	0.999 * 10 = 9.99
+	floor(9.99) = 9
+	9 % 5 = 4
+
+	length is 10
+	rand() = 0.632
+	expand = 10
+	0.632 * 10 = 6.32
+	floor(6.32) = 6
+	6 % 10 = 6
+
+	length is 100
+	rand() = 0.768
+	expand = 100
+	0.768 * 100 = 76.8
+	floor(76.8) = 76
+	76 % 100 = 76
+
+	length is 374
+	rand() is 0.4816
+	expand = 1000
+	0.4816 * 1000 = 481.6
+	floor(481.6) = 481
+	481 % 374 = 107
+
+//Not using this one because bad on first attempt
+func randInLength(length){
+	int expand = 10;
+	while expand <= length( expand = expand * 10; )
+	return floor((rand() * expand) % length;
+}
+*/
+
+/*
+Improvement on randInLength:
+	length is 5
+	rand() = 0.388
+	0.388 * 5 = 1.94
+	floor(1.94) = 1
+
+	length is 5
+	rand() = 0.999
+	0.999 * 5 = 4.995
+	floor(4.995) = 4
+	9 % 5 = 4
+
+	length is 10
+	rand() = 0.632
+	0.632 * 10 = 6.32
+	floor(6.32) = 6
+
+	length is 100
+	rand() = 0.768
+	0.768 * 100 = 76.8
+	floor(76.8) = 76
+
+	length is 374
+	rand() is 0.4816
+	0.4816 * 374 = 180.1184
+	floor(180.1184) = 180
+/*
+
+func randInLength(length){
+	return floor((rand() * length);
+}
+
+/*
+Background functions
+*/
+
+function rand(){
+	//returns random # between 0 and 1
+}
+
+function floor(val){
+	//returns closest lesser int (i.e. 2.88 returns 2)
+}
